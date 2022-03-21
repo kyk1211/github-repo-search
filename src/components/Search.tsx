@@ -1,8 +1,9 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Search() {
   const [data, setData] = useState<any[]>([]);
+  const [repo, setRepo] = useState("");
 
   const fetchRepos = async (user: string): Promise<void> => {
     const info = await axios.get(`https://api.github.com/users/${user}/repos`, {
@@ -37,10 +38,14 @@ export default function Search() {
     setData(info.data);
   };
 
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+
   return (
-    <>
-      <input placeholder="Search Repository" />
-      <input type="button" value={"search"} />
-    </>
+    <div>
+      <input placeholder="Search Repository" onChange={(e) => setRepo(e.target.value)} />
+      <input type="button" value={"search"} onClick={() => fetchReposWithQuery(repo, 10)} />
+    </div>
   );
 }
