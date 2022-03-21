@@ -1,54 +1,45 @@
-import axios from "axios";
-import React, { useState } from "react";
+import qs from "qs";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { fetchReposWithQuery } from "../lib/callApi";
+import Pagination from "./Pagination";
 import Search from "./Search";
+
+interface ApiResult {
+  incomplete_results: boolean;
+  items: any[];
+  total_count: number;
+}
 
 export default function SearchList() {
   const [data, setData] = useState<any[]>([]);
-  const [repo, setRepo] = useState("");
+  const [dataCount, setDataCount] = useState(0);
+  const [page, setPage] = useState(1);
+  const location = useLocation();
+  const query = qs.parse(location.search, {
+    ignoreQueryPrefix: true,
+  });
 
-  const fetchRepos = async (user: string): Promise<void> => {
-    const info = await axios.get(`https://api.github.com/users/${user}/repos`, {
-      headers: {
-        Accept: "application/vnd.github.v3+json",
-      },
-    });
-    setData(info.data);
+  const getData = async (repo: string, num: number) => {
+    const result = await fetchReposWithQuery<ApiResult>(repo, num);
+    console.log(result);
+    setData(result.items);
+    setDataCount(result.total_count);
   };
 
-  const fetchIssues = async (user: string, repo: string, num: number): Promise<void> => {
-    const info = await axios.get(`https://api.github.com/repos/${user}/${repo}/issues${num}`, {
-      headers: {
-        Accept: "application/vnd.github.v3+json",
-      },
-    });
-    setData(info.data);
-  };
-
-  const fetchUserRepo = async (): Promise<void> => {
-    const info = await axios.get("https://api.github.com/users/kyk1211/repos");
-    setData(info.data);
-  };
-
-  const fetchReposWithQuery = async (repo: string, page: number): Promise<void> => {
-    const info = await axios.get(
-      `https://api.github.com/search/repositories?q=${repo}+in:name&page=${page}&per_page=10`,
-      {
-        headers: { Accept: "application/vnd.github.v3+json" },
-      }
-    );
-    setData(info.data);
-  };
+  useEffect(() => {
+    getData(query.repo as string, page);
+  }, [location.search, page, query.repo]);
 
   return (
     <div>
       <Search />
       <ul>
-        <li>1</li>
-        <li>2</li>
-        <li>3</li>
-        <li>4</li>
-        <li>5</li>
+        {data?.map((el) => (
+          <li key={el.id}>{el.full_name}</li>
+        ))}
       </ul>
+      <Pagination dataCount={dataCount} currentPage={page} onPageChange={setPage} />
     </div>
   );
 }
