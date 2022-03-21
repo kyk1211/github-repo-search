@@ -60,9 +60,9 @@ function Pagination({ dataCount, rowsPerPage = 10, currentPage, siblingCount = 2
       {paginationRange.map((pageNum, idx) => {
         if (pageNum === DOTS) {
           return (
-            <li key={idx} className="pagination-item dots">
+            <Dot key={idx} className="pagination-item dots">
               &#8230;
-            </li>
+            </Dot>
           );
         } else if (typeof pageNum === "number") {
           return (
@@ -96,13 +96,15 @@ interface PageActive {
 
 const Container = styled.ul({
   width: "400px",
-  height: "20px",
   display: "flex",
   listStyle: "none",
-  justifyContent: "space-between",
   alignItems: "center",
   margin: "auto",
   fontSize: "20px",
+});
+
+const Dot = styled.li({
+  pointerEvents: "none",
 });
 
 const DefaultLi = styled.li({
@@ -132,6 +134,9 @@ const DbArrow = styled(Arrow)({
   },
 });
 
-const PageBtn = styled(DefaultLi)<PageActive>({}, (props) => props.active && { fontWeight: "bold" });
+const PageBtn = styled(DefaultLi)<PageActive>(
+  {},
+  (props) => props.active && { fontWeight: "bold", backgroundColor: "lightgray" }
+);
 
 export default Pagination;
