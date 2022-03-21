@@ -3,21 +3,8 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { fetchReposWithQuery } from "../lib/callApi";
 import Pagination from "./Pagination";
+import RepoCard from "./RepoCard";
 import Search from "./Search";
-
-interface ApiResult {
-  incomplete_results: boolean;
-  items: ApiItems[];
-  total_count: number;
-}
-interface ApiItems {
-  id: number;
-  full_name: string;
-  created_at: string;
-  updated_at: string;
-  html_url: string;
-  [key: string]: any;
-}
 
 export default function SearchList() {
   const [isLoading, setIsLoading] = useState(false);
@@ -51,7 +38,7 @@ export default function SearchList() {
       {isLoading || (
         <ul>
           {data?.map((el) => (
-            <li key={el.id}>{el.full_name}</li>
+            <RepoCard key={el.id} item={el} />
           ))}
         </ul>
       )}
