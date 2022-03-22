@@ -1,36 +1,37 @@
 import styled from "@emotion/styled";
 import React, { useState } from "react";
+import useLocalStorage from "../hooks/useLocalStorage";
 import Modal from "./Modal";
 
 interface Props {
   item: ApiItems;
   type?: "saved" | "searched";
+  handleClick: (item: ApiItems) => void;
 }
 
-export default function RepoCard({ item, type }: Props) {
+export default function RepoCard({ item, type, handleClick }: Props) {
   const [modal, setModal] = useState(false);
+  const [repos, setRepos] = useLocalStorage<ApiItems[]>("repos");
 
   const handleSave = () => {
-    const myRepo: ApiItems[] | null = JSON.parse(window.localStorage.getItem("repos") as string);
-    if (myRepo !== null && myRepo.length < 4) {
-      const data = myRepo.filter((value) => value.id !== item.id);
-      data.push(item);
-      window.localStorage.setItem("repos", JSON.stringify(data));
-      alert("저장 성공");
+    if (repos !== null && repos.length < 4) {
+      if (repos.filter((value) => value.id !== item.id).length !== repos.length) {
+        alert("이미 저장되었습니다.");
+      } else {
+        const data = [...repos];
+        data.push(item);
+        setRepos(data);
+        alert("저장 성공");
+      }
     }
-    if (myRepo !== null && myRepo.length >= 4) {
+    if (repos !== null && repos.length >= 4) {
       alert("저장은 최대 4개까지 입니다.");
     }
-    if (myRepo === null) {
+    if (repos === null) {
       const myRepo = [item];
-      window.localStorage.setItem("repos", JSON.stringify(myRepo));
+      setRepos(myRepo);
     }
     setModal(false);
-  };
-
-  const handleDelete = () => {
-    const myRepo: ApiItems[] | null = JSON.parse(window.localStorage.getItem("repos") as string);
-    window.localStorage.setItem("repos", JSON.stringify(myRepo?.filter((value) => value.id !== item.id)));
   };
 
   if (type === "saved") {
@@ -41,7 +42,14 @@ export default function RepoCard({ item, type }: Props) {
             <h3>이 레포지토리를 삭제하시겠습니까?</h3>
             <p>Repository: {item.full_name}</p>
             <div>
-              <OkayBtn onClick={handleDelete}>삭제</OkayBtn>
+              <OkayBtn
+                onClick={() => {
+                  handleClick(item);
+                  setModal(false);
+                }}
+              >
+                삭제
+              </OkayBtn>
               <CancelBtn onClick={() => setModal(false)}>취소</CancelBtn>
             </div>
           </ModalContent>
@@ -66,7 +74,14 @@ export default function RepoCard({ item, type }: Props) {
           <h3>이 레포지토리를 저장하시겠습니까?</h3>
           <p>Repository: {item.full_name}</p>
           <div>
-            <OkayBtn onClick={handleSave}>저장</OkayBtn>
+            <OkayBtn
+              onClick={() => {
+                handleClick(item);
+                setModal(false);
+              }}
+            >
+              저장
+            </OkayBtn>
             <CancelBtn onClick={() => setModal(false)}>취소</CancelBtn>
           </div>
         </ModalContent>
