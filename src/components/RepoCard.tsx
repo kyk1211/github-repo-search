@@ -1,27 +1,37 @@
 import styled from "@emotion/styled";
-import React from "react";
+import React, { useState } from "react";
+import Modal from "./Modal";
 
 interface Props {
   item: ApiItems;
-  handleClick?: () => void;
 }
 
 export default function RepoCard({ item }: Props) {
+  const [modal, setModal] = useState(false);
+
+  const handleClick = () => {
+    setModal(true);
+  };
+
   return (
-    <Container>
-      <img src={item.owner.avatar_url} alt="" />
-      <Wrapper>
-        <h1>{item.full_name}</h1>
-        <p>{item.description}</p>
-        <p>created_at: {new Date(item.created_at).toLocaleString()}</p>
-        <p>updated_at: {new Date(item.updated_at).toLocaleString()}</p>
-      </Wrapper>
-    </Container>
+    <>
+      <Modal show={modal} setShow={setModal}>
+        <p>123</p>
+      </Modal>
+      <Container onClick={handleClick}>
+        <img src={item.owner.avatar_url} alt="" />
+        <Wrapper>
+          <h1>{item.full_name}</h1>
+          <p>{item.description}</p>
+          <p>created_at: {new Date(item.created_at).toLocaleString()}</p>
+          <p>updated_at: {new Date(item.updated_at).toLocaleString()}</p>
+        </Wrapper>
+      </Container>
+    </>
   );
 }
 
 const Container = styled.div({
-  position: "relative",
   minWidth: "700px",
   width: "calc(50% - 20px)",
   display: "flex",
@@ -48,6 +58,7 @@ const Wrapper = styled.div({
   display: "flex",
   flexDirection: "column",
   gap: "5px",
+  userSelect: "none",
 
   "h1, p": {
     textOverflow: "ellipsis",
