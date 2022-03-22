@@ -3,9 +3,9 @@ import qs, { ParsedQs } from "qs";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { fetchReposWithQuery } from "../lib/callApi";
-import Pagination from "./Pagination";
-import RepoCard from "./RepoCard";
-import Search from "./Search";
+import Pagination from "../components/Pagination";
+import RepoCard from "../components/RepoCard";
+import Search from "../components/Search";
 
 export default function SearchList() {
   const [isLoading, setIsLoading] = useState(false);

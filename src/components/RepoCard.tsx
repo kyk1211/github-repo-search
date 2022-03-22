@@ -15,46 +15,71 @@ export default function RepoCard({ item }: Props) {
       const data = myRepo.filter((value) => value.id !== item.id);
       data.push(item);
       window.localStorage.setItem("repos", JSON.stringify(data));
-      setModal(false);
-      return;
+      alert("저장 성공");
     }
     if (myRepo !== null && myRepo.length >= 4) {
       alert("저장은 최대 4개까지 입니다.");
-      setModal(false);
-      return;
     }
     if (myRepo === null) {
       const myRepo = [item];
       window.localStorage.setItem("repos", JSON.stringify(myRepo));
-      setModal(false);
-      return;
     }
+    setModal(false);
   };
 
   return (
     <>
       <Modal show={modal} setShow={setModal}>
-        <div>
-          <p>이 레포지토리를 저장하시겠습니까?</p>
-          <p>{item.full_name}</p>
+        <ModalContent>
+          <h3>이 레포지토리를 저장하시겠습니까?</h3>
+          <p>Repository: {item.full_name}</p>
           <div>
-            <button onClick={handleSave}>저장</button>
-            <button onClick={() => setModal(false)}>취소</button>
+            <OkayBtn onClick={handleSave}>저장</OkayBtn>
+            <CancelBtn onClick={() => setModal(false)}>취소</CancelBtn>
           </div>
-        </div>
+        </ModalContent>
       </Modal>
       <Container onClick={() => setModal(true)}>
         <img src={item.owner.avatar_url} alt="" />
         <Wrapper>
           <h1>{item.full_name}</h1>
           <p>{item.description}</p>
-          <p>created_at: {new Date(item.created_at).toLocaleString()}</p>
-          <p>updated_at: {new Date(item.updated_at).toLocaleString()}</p>
+          <p>created_at: {new Date(item.created_at).toLocaleDateString()}</p>
+          <p>updated_at: {new Date(item.updated_at).toLocaleDateString()}</p>
         </Wrapper>
       </Container>
     </>
   );
 }
+
+const ModalContent = styled.div({
+  width: "300px",
+  display: "flex",
+  flexDirection: "column",
+  gap: "10px",
+  "& > div": {
+    alignSelf: "flex-end",
+    display: "flex",
+    gap: "5px",
+  },
+});
+
+const Button = styled.button({
+  border: "none",
+  backgroundColor: "none",
+  color: "white",
+  cursor: "pointer",
+  padding: "5px 10px",
+  borderRadius: "5px",
+});
+
+const OkayBtn = styled(Button)({
+  backgroundColor: "#4CAF50",
+});
+
+const CancelBtn = styled(Button)({
+  backgroundColor: "#f44336",
+});
 
 const Container = styled.div({
   minWidth: "700px",

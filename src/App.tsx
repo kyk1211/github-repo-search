@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import SearchList from "./components/SearchList";
+import SearchList from "./pages/SearchList";
 import Home from "./pages/Home";
 import MyRepos from "./pages/MyRepos";
 
