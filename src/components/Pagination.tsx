@@ -128,7 +128,7 @@ const Arrow = styled(DefaultLi)<ArrowProps>(
       width: "8px",
     },
   },
-  (props) => props.disabled && { opacity: "0.7", pointerEvents: "none", cursor: "default" }
+  (props) => props.disabled && { opacity: "0.5", pointerEvents: "none", cursor: "default" }
 );
 
 const DbArrow = styled(Arrow)({

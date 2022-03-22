@@ -5,7 +5,7 @@ const headers = {
   Authorization: `token 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`,
 };
 
-const perPage = 8;
+const perPage = 10;
 
 const fetchRepos = async <T>(user: string): Promise<T> => {
   const info = await axios.get(`https://api.github.com/users/${user}/repos`, {
