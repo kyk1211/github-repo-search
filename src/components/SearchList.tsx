@@ -1,3 +1,4 @@
+import styled from "@emotion/styled";
 import qs from "qs";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
@@ -32,17 +33,26 @@ export default function SearchList() {
   }, [location.search, page, query.repo]);
 
   return (
-    <div>
+    <Container>
       <Search />
       {isLoading && <p>Loading</p>}
-      {isLoading || (
-        <ul>
-          {data?.map((el) => (
-            <RepoCard key={el.id} item={el} />
-          ))}
-        </ul>
-      )}
+      <Wrapper>
+        {data?.map((el) => (
+          <RepoCard key={el.id} item={el} />
+        ))}
+      </Wrapper>
       <Pagination dataCount={dataCount} currentPage={page} onPageChange={setPage} />
-    </div>
+    </Container>
   );
 }
+
+const Container = styled.div({});
+
+const Wrapper = styled.div({
+  display: "flex",
+  flexWrap: "wrap",
+  gap: "10px",
+  justifyContent: "center",
+  alignItems: "center",
+  marginBottom: "10px",
+});
