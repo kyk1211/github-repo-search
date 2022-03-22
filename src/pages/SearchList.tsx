@@ -58,7 +58,9 @@ export default function SearchList() {
   );
 }
 
-const Container = styled.div({});
+const Container = styled.div({
+  padding: "0 10px",
+});
 
 const Wrapper = styled.div({
   display: "flex",

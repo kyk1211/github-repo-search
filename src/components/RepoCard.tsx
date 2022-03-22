@@ -4,9 +4,10 @@ import Modal from "./Modal";
 
 interface Props {
   item: ApiItems;
+  type?: "saved" | "searched";
 }
 
-export default function RepoCard({ item }: Props) {
+export default function RepoCard({ item, type }: Props) {
   const [modal, setModal] = useState(false);
 
   const handleSave = () => {
@@ -26,6 +27,37 @@ export default function RepoCard({ item }: Props) {
     }
     setModal(false);
   };
+
+  const handleDelete = () => {
+    const myRepo: ApiItems[] | null = JSON.parse(window.localStorage.getItem("repos") as string);
+    window.localStorage.setItem("repos", JSON.stringify(myRepo?.filter((value) => value.id !== item.id)));
+  };
+
+  if (type === "saved") {
+    return (
+      <>
+        <Modal show={modal} setShow={setModal}>
+          <ModalContent>
+            <h3>이 레포지토리를 삭제하시겠습니까?</h3>
+            <p>Repository: {item.full_name}</p>
+            <div>
+              <OkayBtn onClick={handleDelete}>삭제</OkayBtn>
+              <CancelBtn onClick={() => setModal(false)}>취소</CancelBtn>
+            </div>
+          </ModalContent>
+        </Modal>
+        <Container onClick={() => setModal(true)}>
+          <img src={item.owner.avatar_url} alt="" />
+          <Wrapper>
+            <h1>{item.full_name}</h1>
+            <p>{item.description}</p>
+            <p>created_at: {new Date(item.created_at).toLocaleDateString()}</p>
+            <p>updated_at: {new Date(item.updated_at).toLocaleDateString()}</p>
+          </Wrapper>
+        </Container>
+      </>
+    );
+  }
 
   return (
     <>
@@ -82,14 +114,14 @@ const CancelBtn = styled(Button)({
 });
 
 const Container = styled.div({
-  minWidth: "700px",
+  minWidth: "680px",
   width: "calc(50% - 20px)",
   display: "flex",
   alignItems: "center",
   gap: "10px",
   border: "1px solid black",
   transform: "scale(0.9)",
-  transition: "all 0.2s linear",
+  transition: "transform 0.2s linear",
 
   "& img": {
     width: "200px",
@@ -98,6 +130,11 @@ const Container = styled.div({
 
   "&:hover": {
     transform: "scale(1)",
+  },
+
+  "@media screen and (max-width: 1400px)": {
+    minWidth: "unset",
+    width: "100%",
   },
 });
 
