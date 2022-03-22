@@ -4,22 +4,46 @@ import Modal from "./Modal";
 
 interface Props {
   item: ApiItems;
-  handleClick?: () => void;
 }
 
 export default function RepoCard({ item }: Props) {
   const [modal, setModal] = useState(false);
 
-  const handleClick = () => {
-    setModal(true);
+  const handleSave = () => {
+    const myRepo: ApiItems[] | null = JSON.parse(window.localStorage.getItem("repos") as string);
+    if (myRepo !== null && myRepo.length < 4) {
+      const data = myRepo.filter((value) => value.id !== item.id);
+      data.push(item);
+      window.localStorage.setItem("repos", JSON.stringify(data));
+      setModal(false);
+      return;
+    }
+    if (myRepo !== null && myRepo.length >= 4) {
+      alert("저장은 최대 4개까지 입니다.");
+      setModal(false);
+      return;
+    }
+    if (myRepo === null) {
+      const myRepo = [item];
+      window.localStorage.setItem("repos", JSON.stringify(myRepo));
+      setModal(false);
+      return;
+    }
   };
 
   return (
     <>
       <Modal show={modal} setShow={setModal}>
-        <p>123</p>
+        <div>
+          <p>이 레포지토리를 저장하시겠습니까?</p>
+          <p>{item.full_name}</p>
+          <div>
+            <button onClick={handleSave}>저장</button>
+            <button onClick={() => setModal(false)}>취소</button>
+          </div>
+        </div>
       </Modal>
-      <Container onClick={handleClick}>
+      <Container onClick={() => setModal(true)}>
         <img src={item.owner.avatar_url} alt="" />
         <Wrapper>
           <h1>{item.full_name}</h1>

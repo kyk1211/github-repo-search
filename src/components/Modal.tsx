@@ -20,12 +20,7 @@ export default function Modal({ show, setShow, children }: Props) {
 
   return (
     <Container onClick={() => setShow(false)}>
-      <Wrapper onClick={(e) => e.stopPropagation()}>
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          <p onClick={() => setShow(false)}>X</p>
-        </div>
-        {children}
-      </Wrapper>
+      <Wrapper onClick={(e) => e.stopPropagation()}>{children}</Wrapper>
     </Container>
   );
 }
@@ -44,9 +39,8 @@ const Container = styled.div({
 
 const Wrapper = styled.div({
   backgroundColor: "#fff",
-  width: "300px",
-  height: "300px",
-  borderRadius: "20px",
+  borderRadius: "10px",
   display: "flex",
   flexDirection: "column",
+  padding: "10px",
 });
