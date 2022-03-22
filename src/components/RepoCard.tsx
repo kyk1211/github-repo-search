@@ -4,6 +4,7 @@ import Modal from "./Modal";
 
 interface Props {
   item: ApiItems;
+  handleClick?: () => void;
 }
 
 export default function RepoCard({ item }: Props) {
