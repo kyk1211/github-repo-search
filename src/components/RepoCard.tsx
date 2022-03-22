@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
 import React, { useState } from "react";
-import useLocalStorage from "../hooks/useLocalStorage";
 import Modal from "./Modal";
 
 interface Props {
@@ -11,28 +10,6 @@ interface Props {
 
 export default function RepoCard({ item, type, handleClick }: Props) {
   const [modal, setModal] = useState(false);
-  const [repos, setRepos] = useLocalStorage<ApiItems[]>("repos");
-
-  const handleSave = () => {
-    if (repos !== null && repos.length < 4) {
-      if (repos.filter((value) => value.id !== item.id).length !== repos.length) {
-        alert("이미 저장되었습니다.");
-      } else {
-        const data = [...repos];
-        data.push(item);
-        setRepos(data);
-        alert("저장 성공");
-      }
-    }
-    if (repos !== null && repos.length >= 4) {
-      alert("저장은 최대 4개까지 입니다.");
-    }
-    if (repos === null) {
-      const myRepo = [item];
-      setRepos(myRepo);
-    }
-    setModal(false);
-  };
 
   if (type === "saved") {
     return (
@@ -55,7 +32,7 @@ export default function RepoCard({ item, type, handleClick }: Props) {
           </ModalContent>
         </Modal>
         <Container onClick={() => setModal(true)}>
-          <img src={item.owner.avatar_url} alt="" />
+          <img src={item.owner.avatar_url} alt="avatar" />
           <Wrapper>
             <h1>{item.full_name}</h1>
             <p>{item.description}</p>
@@ -87,7 +64,7 @@ export default function RepoCard({ item, type, handleClick }: Props) {
         </ModalContent>
       </Modal>
       <Container onClick={() => setModal(true)}>
-        <img src={item.owner.avatar_url} alt="" />
+        <img src={item.owner.avatar_url} alt="avatar" />
         <Wrapper>
           <h1>{item.full_name}</h1>
           <p>{item.description}</p>
