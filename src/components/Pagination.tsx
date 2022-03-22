@@ -70,6 +70,8 @@ function Pagination({ dataCount, rowsPerPage = 10, currentPage, siblingCount = 2
               {pageNum}
             </PageBtn>
           );
+        } else {
+          return null;
         }
       })}
       <Arrow onClick={onNext} disabled={currentPage === lastPage}>
@@ -100,6 +102,7 @@ const Container = styled.ul({
   listStyle: "none",
   alignItems: "center",
   margin: "auto",
+  marginBottom: "10px",
   fontSize: "20px",
 });
 
