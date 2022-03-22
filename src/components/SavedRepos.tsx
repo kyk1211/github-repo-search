@@ -1,15 +1,21 @@
 import styled from "@emotion/styled";
-import React, { useEffect, useState } from "react";
+import React from "react";
+import useLocalStorage from "../hooks/useLocalStorage";
 import RepoCard from "./RepoCard";
 
 export default function SavedRepos() {
-  const [repos, setRepos] = useState<ApiItems[]>(JSON.parse(window.localStorage.getItem("repos") as string) || []);
+  const [repos, setRepos] = useLocalStorage<ApiItems[]>("repos");
+
+  const handleDelete = (item: ApiItems) => {
+    setRepos((prev) => prev.filter((value) => value.id !== item.id));
+    alert("삭제 성공");
+  };
 
   return (
     <aside style={{ width: "30%" }}>
       <ul>
         {repos?.map((item) => (
-          <RepoCard item={item} type={"saved"} />
+          <RepoCard item={item} type={"saved"} handleClick={handleDelete} />
         ))}
       </ul>
     </aside>

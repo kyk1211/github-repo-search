@@ -5,33 +5,11 @@ import Modal from "./Modal";
 interface Props {
   item: ApiItems;
   type?: "saved" | "searched";
+  handleClick: (item: ApiItems) => void;
 }
 
-export default function RepoCard({ item, type }: Props) {
+export default function RepoCard({ item, type, handleClick }: Props) {
   const [modal, setModal] = useState(false);
-
-  const handleSave = () => {
-    const myRepo: ApiItems[] | null = JSON.parse(window.localStorage.getItem("repos") as string);
-    if (myRepo !== null && myRepo.length < 4) {
-      const data = myRepo.filter((value) => value.id !== item.id);
-      data.push(item);
-      window.localStorage.setItem("repos", JSON.stringify(data));
-      alert("저장 성공");
-    }
-    if (myRepo !== null && myRepo.length >= 4) {
-      alert("저장은 최대 4개까지 입니다.");
-    }
-    if (myRepo === null) {
-      const myRepo = [item];
-      window.localStorage.setItem("repos", JSON.stringify(myRepo));
-    }
-    setModal(false);
-  };
-
-  const handleDelete = () => {
-    const myRepo: ApiItems[] | null = JSON.parse(window.localStorage.getItem("repos") as string);
-    window.localStorage.setItem("repos", JSON.stringify(myRepo?.filter((value) => value.id !== item.id)));
-  };
 
   if (type === "saved") {
     return (
@@ -41,13 +19,20 @@ export default function RepoCard({ item, type }: Props) {
             <h3>이 레포지토리를 삭제하시겠습니까?</h3>
             <p>Repository: {item.full_name}</p>
             <div>
-              <OkayBtn onClick={handleDelete}>삭제</OkayBtn>
+              <OkayBtn
+                onClick={() => {
+                  handleClick(item);
+                  setModal(false);
+                }}
+              >
+                삭제
+              </OkayBtn>
               <CancelBtn onClick={() => setModal(false)}>취소</CancelBtn>
             </div>
           </ModalContent>
         </Modal>
         <Container onClick={() => setModal(true)}>
-          <img src={item.owner.avatar_url} alt="" />
+          <img src={item.owner.avatar_url} alt="avatar" />
           <Wrapper>
             <h1>{item.full_name}</h1>
             <p>{item.description}</p>
@@ -66,13 +51,20 @@ export default function RepoCard({ item, type }: Props) {
           <h3>이 레포지토리를 저장하시겠습니까?</h3>
           <p>Repository: {item.full_name}</p>
           <div>
-            <OkayBtn onClick={handleSave}>저장</OkayBtn>
+            <OkayBtn
+              onClick={() => {
+                handleClick(item);
+                setModal(false);
+              }}
+            >
+              저장
+            </OkayBtn>
             <CancelBtn onClick={() => setModal(false)}>취소</CancelBtn>
           </div>
         </ModalContent>
       </Modal>
       <Container onClick={() => setModal(true)}>
-        <img src={item.owner.avatar_url} alt="" />
+        <img src={item.owner.avatar_url} alt="avatar" />
         <Wrapper>
           <h1>{item.full_name}</h1>
           <p>{item.description}</p>

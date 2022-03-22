@@ -6,6 +6,7 @@ import { fetchReposWithQuery } from "../lib/callApi";
 import Pagination from "../components/Pagination";
 import RepoCard from "../components/RepoCard";
 import Search from "../components/Search";
+import useLocalStorage from "../hooks/useLocalStorage";
 
 export default function SearchList() {
   const [isLoading, setIsLoading] = useState(false);
@@ -13,6 +14,7 @@ export default function SearchList() {
   const [dataCount, setDataCount] = useState(0);
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState<ParsedQs>({});
+  const [repos, setRepos] = useLocalStorage<ApiItems[]>("repos");
   const location = useLocation();
 
   const getData = async (repo: string, num: number) => {
@@ -22,6 +24,26 @@ export default function SearchList() {
     setData(result.items);
     setDataCount(result.total_count >= 1000 ? 1000 : result.total_count);
     setIsLoading(false);
+  };
+
+  const handleSave = (item: ApiItems) => {
+    if (repos !== null && repos.length < 4) {
+      if (repos.filter((value) => value.id !== item.id).length !== repos.length) {
+        alert("이미 저장되었습니다.");
+      } else {
+        const data = [...repos];
+        data.push(item);
+        setRepos(data);
+        alert("저장 성공");
+      }
+    }
+    if (repos !== null && repos.length >= 4) {
+      alert("저장은 최대 4개까지 입니다.");
+    }
+    if (repos === null) {
+      const myRepo = [item];
+      setRepos(myRepo);
+    }
   };
 
   useEffect(() => {
@@ -50,7 +72,7 @@ export default function SearchList() {
       {isLoading && <p>Loading</p>}
       <Wrapper>
         {data?.map((el) => (
-          <RepoCard key={el.id} item={el} />
+          <RepoCard key={el.id} item={el} handleClick={handleSave} />
         ))}
       </Wrapper>
       <Pagination dataCount={dataCount} currentPage={page} onPageChange={setPage} />
