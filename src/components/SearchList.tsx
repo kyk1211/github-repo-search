@@ -1,4 +1,5 @@
-import qs from "qs";
+import styled from "@emotion/styled";
+import qs, { ParsedQs } from "qs";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { fetchReposWithQuery } from "../lib/callApi";
@@ -11,10 +12,8 @@ export default function SearchList() {
   const [data, setData] = useState<ApiItems[]>([]);
   const [dataCount, setDataCount] = useState(0);
   const [page, setPage] = useState(1);
+  const [query, setQuery] = useState<ParsedQs>({});
   const location = useLocation();
-  const query = qs.parse(location.search, {
-    ignoreQueryPrefix: true,
-  });
 
   const getData = async (repo: string, num: number) => {
     setIsLoading(true);
@@ -26,23 +25,46 @@ export default function SearchList() {
   };
 
   useEffect(() => {
+    setData([]);
+    setDataCount(0);
+    setPage(1);
+  }, [location]);
+
+  useEffect(() => {
+    setQuery(
+      qs.parse(location.search, {
+        ignoreQueryPrefix: true,
+      })
+    );
+  }, [location.search]);
+
+  useEffect(() => {
     if (query.repo) {
       getData(query.repo as string, page);
     }
-  }, [location.search, page, query.repo]);
+  }, [page, query.repo]);
 
   return (
-    <div>
+    <Container>
       <Search />
       {isLoading && <p>Loading</p>}
-      {isLoading || (
-        <ul>
-          {data?.map((el) => (
-            <RepoCard key={el.id} item={el} />
-          ))}
-        </ul>
-      )}
+      <Wrapper>
+        {data?.map((el) => (
+          <RepoCard key={el.id} item={el} />
+        ))}
+      </Wrapper>
       <Pagination dataCount={dataCount} currentPage={page} onPageChange={setPage} />
-    </div>
+    </Container>
   );
 }
+
+const Container = styled.div({});
+
+const Wrapper = styled.div({
+  display: "flex",
+  flexWrap: "wrap",
+  gap: "10px",
+  justifyContent: "center",
+  alignItems: "center",
+  marginBottom: "10px",
+});
