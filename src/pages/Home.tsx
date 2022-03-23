@@ -9,14 +9,20 @@ export default function Home() {
       <header>
         <NavBar />
       </header>
-      <main>
+      <Main>
         <Outlet />
-      </main>
+      </Main>
     </Container>
   );
 }
 
 const Container = styled.div({
   backgroundColor: "#FFB6C1",
+  width: "calc(100vw - (100vw - 100%))",
   minHeight: "100vh",
+});
+
+const Main = styled.main({
+  width: "100%",
+  height: "calc(100% - 50px)",
 });

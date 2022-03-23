@@ -7,6 +7,7 @@ import Pagination from "../components/Pagination";
 import RepoCard from "../components/RepoCard";
 import Search from "../components/Search";
 import useLocalStorage from "../hooks/useLocalStorage";
+import Loading from "../components/Loading";
 
 export default function SearchList() {
   const [isLoading, setIsLoading] = useState(false);
@@ -20,7 +21,6 @@ export default function SearchList() {
   const getData = async (repo: string, num: number) => {
     setIsLoading(true);
     const result = await fetchReposWithQuery<RepoResult>(repo, num);
-    console.log("repo", result);
     setData(result.items);
     setDataCount(result.total_count >= 1000 ? 1000 : result.total_count);
     setIsLoading(false);
@@ -69,11 +69,14 @@ export default function SearchList() {
   return (
     <Container>
       <Search />
-      {isLoading && <p>Loading</p>}
       <Wrapper>
-        {data?.map((el) => (
-          <RepoCard key={el.id} item={el} handleClick={handleSave} />
-        ))}
+        {isLoading ? (
+          <LoadingContainer>
+            <Loading />
+          </LoadingContainer>
+        ) : (
+          data?.map((el) => <RepoCard key={el.id} item={el} handleClick={handleSave} />)
+        )}
       </Wrapper>
       <Pagination dataCount={dataCount} currentPage={page} onPageChange={setPage} />
     </Container>
@@ -91,4 +94,8 @@ const Wrapper = styled.ul({
   justifyContent: "center",
   alignItems: "center",
   marginBottom: "10px",
+});
+
+const LoadingContainer = styled.div({
+  padding: "50px",
 });

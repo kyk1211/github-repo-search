@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { fetchIssuesWithQuery } from "../lib/callApi";
 import IssueCard from "./IssueCard";
+import Loading from "./Loading";
 import Pagination from "./Pagination";
 
 export default function Issues() {
@@ -18,7 +19,6 @@ export default function Issues() {
   const getData = async (repo: string, num: number) => {
     setIsLoading(true);
     const result = await fetchIssuesWithQuery<IssueResult>(repo, num);
-    console.log("issue", result);
     setIssues(result.items);
     setDataCount(result.total_count >= 1000 ? 1000 : result.total_count);
     setIsLoading(false);
@@ -47,12 +47,10 @@ export default function Issues() {
   return (
     <Container>
       <Title>Issues</Title>
-      {isLoading && <p>loading</p>}
       {issues.length === 0 && !isLoading && <p>이슈가 없습니다.</p>}
+      {isLoading && <Loading />}
       <Wrapper>
-        {issues.map((value) => (
-          <IssueCard key={value.id} item={value} name={query.repo as string} />
-        ))}
+        {!isLoading && issues.map((value) => <IssueCard key={value.id} item={value} name={query.repo as string} />)}
       </Wrapper>
       <Pagination dataCount={dataCount} currentPage={page} onPageChange={setPage} />
     </Container>
@@ -62,6 +60,9 @@ export default function Issues() {
 const Container = styled.section({
   padding: "10px",
   width: "100%",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
 });
 
 const Title = styled.h1({
@@ -69,6 +70,7 @@ const Title = styled.h1({
 });
 
 const Wrapper = styled.ul({
+  width: "100%",
   padding: "10px 20px",
   listStyle: "none",
   display: "flex",
