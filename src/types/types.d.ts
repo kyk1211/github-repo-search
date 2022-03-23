@@ -31,6 +31,7 @@ interface IssueItems {
   title: string;
   created_at: string;
   updated_at: string;
+  closed_at: string | null;
   id: number;
   number: number;
   html_url: string;
