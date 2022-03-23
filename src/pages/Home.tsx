@@ -2,6 +2,7 @@ import React from "react";
 import NavBar from "../components/NavBar";
 import { Outlet } from "react-router-dom";
 import styled from "@emotion/styled";
+import { ToastList } from "../components/ToastList";
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
         <NavBar />
       </header>
       <Main>
+        <ToastList />
         <Outlet />
       </Main>
     </Container>
