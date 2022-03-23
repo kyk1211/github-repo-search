@@ -14,4 +14,6 @@ export default function MyRepos() {
 
 const Container = styled.div({
   display: "flex",
+  width: "100%",
+  height: "100%",
 });

@@ -7,6 +7,7 @@ import Pagination from "../components/Pagination";
 import RepoCard from "../components/RepoCard";
 import Search from "../components/Search";
 import useLocalStorage from "../hooks/useLocalStorage";
+import Loading from "../components/Loading";
 
 export default function SearchList() {
   const [isLoading, setIsLoading] = useState(false);
@@ -69,7 +70,12 @@ export default function SearchList() {
   return (
     <Container>
       <Search />
-      {isLoading && <p>Loading</p>}
+      {isLoading && (
+        <div style={{ paddingTop: "10%" }}>
+          {" "}
+          <Loading />
+        </div>
+      )}
       <Wrapper>
         {data?.map((el) => (
           <RepoCard key={el.id} item={el} handleClick={handleSave} />
