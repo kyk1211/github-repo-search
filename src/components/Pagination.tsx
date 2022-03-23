@@ -101,8 +101,8 @@ const Container = styled.ul({
   display: "flex",
   listStyle: "none",
   alignItems: "center",
+  padding: "10px 0",
   margin: "auto",
-  marginBottom: "10px",
   fontSize: "20px",
 });
 
@@ -118,7 +118,7 @@ const DefaultLi = styled.li({
   borderRadius: "10px",
   padding: "2px",
   "&:hover": {
-    backgroundColor: "lightgray",
+    backgroundColor: "#fff",
   },
 });
 
@@ -139,7 +139,7 @@ const DbArrow = styled(Arrow)({
 
 const PageBtn = styled(DefaultLi)<PageActive>(
   {},
-  (props) => props.active && { fontWeight: "bold", backgroundColor: "lightgray" }
+  (props) => props.active && { fontWeight: "bold", backgroundColor: "#fff" }
 );
 
 export default Pagination;

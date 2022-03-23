@@ -13,7 +13,7 @@ export default function NavBar() {
       <StyledLink to="search" style={({ isActive }) => ({ fontWeight: isActive ? "bold" : "" })}>
         Search
       </StyledLink>
-      <StyledLink to="repos" style={({ isActive }) => ({ fontWeight: isActive ? "bold" : "" })}>
+      <StyledLink to="issue" style={({ isActive }) => ({ fontWeight: isActive ? "bold" : "" })}>
         My Repositories
       </StyledLink>
     </Nav>
@@ -29,6 +29,7 @@ const Nav = styled.div({
   padding: "0px 10px",
   gap: "20px",
   borderBottom: "1px solid black",
+  backgroundColor: "#ff99a5",
 });
 
 const StyledLink = styled(NavLink)({

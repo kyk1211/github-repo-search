@@ -38,6 +38,7 @@ const Container = styled.div({
 });
 
 const Wrapper = styled.div({
+  backgroundColor: "#fff",
   display: "flex",
   width: "450px",
   border: "1px solid black",
