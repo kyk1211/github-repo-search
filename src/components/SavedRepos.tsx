@@ -10,27 +10,35 @@ export default function SavedRepos() {
 
   const handleDelete = (item: RepoItems) => {
     setRepos((prev) => prev.filter((value) => value.id !== item.id));
+    navigate("/issue");
   };
 
   return (
     <Container>
-      <Title>저장 목록</Title>
-      <List>
-        {repos.map((item) => (
-          <li key={item.id} onClick={() => navigate({ pathname: "/issue", search: `?repo=${item.full_name}` })}>
-            <RepoCard item={item} type={"saved"} handleClick={handleDelete} />
-          </li>
-        ))}
-      </List>
+      <Wrapper>
+        <Title>저장 목록</Title>
+        <List>
+          {repos.map((item) => (
+            <li key={item.id} onClick={() => navigate({ pathname: "/issue", search: `?repo=${item.full_name}` })}>
+              <RepoCard item={item} type={"saved"} handleClick={handleDelete} />
+            </li>
+          ))}
+        </List>
+      </Wrapper>
     </Container>
   );
 }
 
 const Container = styled.aside({
   width: "500px",
-  minHeight: "100vh",
+  minHeight: "calc(100vh - 50px)",
   padding: "10px",
   borderRight: "1px solid black",
+});
+
+const Wrapper = styled.div({
+  position: "sticky",
+  top: "0",
   display: "flex",
   flexDirection: "column",
   gap: "10px",

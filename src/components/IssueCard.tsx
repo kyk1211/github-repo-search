@@ -22,6 +22,7 @@ export default function IssueCard({ item, name }: Props) {
           <p>state: {item.state}</p>
           <p>created_at: {new Date(item.created_at).toLocaleDateString()}</p>
           <p>updated_at: {new Date(item.updated_at).toLocaleDateString()}</p>
+          {item.closed_at && <p>closed_at: {new Date(item.closed_at).toLocaleDateString()}</p>}
         </Desc>
       </A>
     </List>
