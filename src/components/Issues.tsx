@@ -47,14 +47,10 @@ export default function Issues() {
   return (
     <Container>
       <Title>Issues</Title>
-      <Div>
-        {issues.length === 0 && !isLoading && <p>이슈가 없습니다.</p>}
-        {isLoading && <Loading />}
-      </Div>
+      {issues.length === 0 && !isLoading && <p>이슈가 없습니다.</p>}
+      {isLoading && <Loading />}
       <Wrapper>
-        {issues.map((value) => (
-          <IssueCard key={value.id} item={value} name={query.repo as string} />
-        ))}
+        {!isLoading && issues.map((value) => <IssueCard key={value.id} item={value} name={query.repo as string} />)}
       </Wrapper>
       <Pagination dataCount={dataCount} currentPage={page} onPageChange={setPage} />
     </Container>
@@ -73,15 +69,8 @@ const Title = styled.h1({
   textAlign: "center",
 });
 
-const Div = styled.div({
-  width: "100%",
-  height: "100%",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-});
-
 const Wrapper = styled.ul({
+  width: "100%",
   padding: "10px 20px",
   listStyle: "none",
   display: "flex",
