@@ -28,7 +28,7 @@ export default function Issues() {
     setIssues([]);
     setDataCount(0);
     setPage(1);
-  }, [location]);
+  }, [location.search]);
 
   useEffect(() => {
     setQuery(
@@ -51,7 +51,7 @@ export default function Issues() {
       {issues.length === 0 && !isLoading && <p>이슈가 없습니다.</p>}
       <Wrapper>
         {issues.map((value) => (
-          <IssueCard key={value.id} item={value} />
+          <IssueCard key={value.id} item={value} name={query.repo as string} />
         ))}
       </Wrapper>
       <Pagination dataCount={dataCount} currentPage={page} onPageChange={setPage} />
