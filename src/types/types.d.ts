@@ -40,3 +40,8 @@ interface IssueItems {
   state: string;
   [key: string]: any;
 }
+
+interface Toast {
+  msg: string;
+  success: boolean;
+}
