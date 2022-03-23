@@ -16,7 +16,7 @@ export default function SavedRepos() {
     <Container>
       <Title>저장 목록</Title>
       <List>
-        {repos?.map((item) => (
+        {repos.map((item) => (
           <li key={item.id} onClick={() => navigate({ pathname: "/issue", search: `?repo=${item.full_name}` })}>
             <RepoCard item={item} type={"saved"} handleClick={handleDelete} />
           </li>
