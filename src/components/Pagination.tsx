@@ -100,6 +100,7 @@ const Container = styled.ul({
   width: "400px",
   display: "flex",
   listStyle: "none",
+  justifyContent: "center",
   alignItems: "center",
   padding: "10px 0",
   margin: "auto",

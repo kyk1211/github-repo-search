@@ -50,7 +50,7 @@ export default function SearchList() {
     setData([]);
     setDataCount(0);
     setPage(1);
-  }, [location]);
+  }, [location.search]);
 
   useEffect(() => {
     setQuery(
