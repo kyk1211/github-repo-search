@@ -2,15 +2,18 @@ import styled from "@emotion/styled";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import useLocalStorage from "../hooks/useLocalStorage";
+import { useToast } from "../hooks/useToast";
 import RepoCard from "./RepoCard";
 
 export default function SavedRepos() {
   const navigate = useNavigate();
   const [repos, setRepos] = useLocalStorage<RepoItems[]>("repos");
+  const toast = useToast();
 
   const handleDelete = (item: RepoItems) => {
     setRepos((prev) => prev.filter((value) => value.id !== item.id));
     navigate("/issue");
+    toast("삭제 성공", true);
   };
 
   return (
