@@ -16,17 +16,15 @@ export const ToastList = () => {
 };
 
 const Warpper = styled.div`
-  width: 15.625rem;
+  width: 250px;
   height: auto;
-  max-height: 100rem;
   position: fixed;
-  right: 10%;
-  top: 1rem;
-  transform: translate(50%, 0);
+  right: 10px;
+  top: 20px;
   z-index: 999;
 
   @media (max-width: 860px) {
-    right: 1.5rem;
+    right: 10px;
     transform: translate(0, 0);
   }
 `;

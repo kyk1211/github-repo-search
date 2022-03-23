@@ -7,7 +7,7 @@ import useDebounce from "./useDebounce";
 
 export const useToast = () => {
   const toastState = useSelector((state: RootState) => state.toast);
-  const toast = useDebounce<Toast[]>(toastState, 2500);
+  const toast = useDebounce<Toast[]>(toastState, 3000);
   const dispatch = useAppDispatch();
 
   const handleToast = (msg: string, success: boolean) => {

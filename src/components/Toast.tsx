@@ -9,7 +9,7 @@ interface Props {
 export default function Toast({ isSuccess, msg }: Props) {
   return (
     <Container isSuccess={isSuccess}>
-      <span style={{ zIndex: 999 }}>{msg}</span>
+      <span>{msg}</span>
       <ProgressBar isSuccess={isSuccess} />
     </Container>
   );
@@ -20,8 +20,9 @@ interface StyleProps {
 }
 
 const Container = styled.div<StyleProps>`
-  width: 15.625rem;
-  height: 3.125rem;
+  zindex: 999;
+  width: 250px;
+  height: 50px;
   background-color: ${({ isSuccess }) => (isSuccess ? "#61A72F" : "#EB2431")};
   color: #fff;
   display: flex;
@@ -33,34 +34,35 @@ const Container = styled.div<StyleProps>`
   position: relative;
   box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
 
-  @keyframes In {
+  @keyframes fadeIn {
     from {
-      transform: translate3d(-100%, 0, 0);
+      transform: translateX(-100%);
       opacity: 0;
     }
     to {
-      transform: translateZ(0);
+      transform: translateX(0);
       opacity: 1;
     }
   }
-  @keyframes Out {
-    from {
-      opacity: 0;
+  @keyframes fadeOut {
+    0% {
+      opacity: 1;
     }
-    to {
+    100% {
+      line-height: 0;
       height: 0;
       opacity: 0;
       margin-bottom: 0;
     }
   }
   animation-fill-mode: forwards;
-  animation-name: In, Out;
-  animation-delay: 0s, 3s;
-  animation-duration: 1s, 0.5s;
+  animation-name: fadeIn, fadeOut;
+  animation-delay: 0s, 2s;
+  animation-duration: 1s, 2s;
 `;
 
 const ProgressBar = styled.div<StyleProps>`
-  width: 15.625rem;
+  width: 100%;
   height: 5%;
   background-color: ${({ isSuccess }) => (isSuccess ? "#94D466" : "#FCDEE0")};
   position: absolute;
@@ -70,8 +72,8 @@ const ProgressBar = styled.div<StyleProps>`
     0% {
       width: 0;
     }
-    90% {
-      width: 15.625rem;
+    100% {
+      width: 100%;
     }
   }
 
