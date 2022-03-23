@@ -10,23 +10,23 @@ import useLocalStorage from "../hooks/useLocalStorage";
 
 export default function SearchList() {
   const [isLoading, setIsLoading] = useState(false);
-  const [data, setData] = useState<ApiItems[]>([]);
+  const [data, setData] = useState<RepoItems[]>([]);
   const [dataCount, setDataCount] = useState(0);
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState<ParsedQs>({});
-  const [repos, setRepos] = useLocalStorage<ApiItems[]>("repos");
+  const [repos, setRepos] = useLocalStorage<RepoItems[]>("repos");
   const location = useLocation();
 
   const getData = async (repo: string, num: number) => {
     setIsLoading(true);
-    const result = await fetchReposWithQuery<ApiResult>(repo, num);
-    console.log(result);
+    const result = await fetchReposWithQuery<RepoResult>(repo, num);
+    console.log("repo", result);
     setData(result.items);
     setDataCount(result.total_count >= 1000 ? 1000 : result.total_count);
     setIsLoading(false);
   };
 
-  const handleSave = (item: ApiItems) => {
+  const handleSave = (item: RepoItems) => {
     if (repos !== null && repos.length < 4) {
       if (repos.filter((value) => value.id !== item.id).length !== repos.length) {
         alert("이미 저장되었습니다.");
@@ -84,7 +84,7 @@ const Container = styled.div({
   padding: "0 10px",
 });
 
-const Wrapper = styled.div({
+const Wrapper = styled.ul({
   display: "flex",
   flexWrap: "wrap",
   gap: "10px",

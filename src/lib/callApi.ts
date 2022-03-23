@@ -7,22 +7,8 @@ const headers = {
 
 const perPage = 10;
 
-const fetchRepos = async <T>(user: string): Promise<T> => {
-  const info = await axios.get(`https://api.github.com/users/${user}/repos`, {
-    headers: headers,
-  });
-  return info.data;
-};
-
-const fetchIssues = async <T>(user: string, repo: string, num: number): Promise<T> => {
-  const info = await axios.get(`https://api.github.com/repos/${user}/${repo}/issues/${num}`, {
-    headers: headers,
-  });
-  return info.data;
-};
-
-const fetchUserRepo = async <T>(): Promise<T> => {
-  const info = await axios.get("https://api.github.com/users/kyk1211/repos", {
+const fetchIssuesWithQuery = async <T>(repo: string, page: number): Promise<T> => {
+  const info = await axios.get(`https://api.github.com/search/issues?q=repo:${repo}&page=${page}&per_page=${perPage}`, {
     headers: headers,
   });
   return info.data;
@@ -38,4 +24,4 @@ const fetchReposWithQuery = async <T>(repo: string, page: number): Promise<T> =>
   return info.data;
 };
 
-export { fetchIssues, fetchRepos, fetchReposWithQuery, fetchUserRepo };
+export { fetchIssuesWithQuery, fetchReposWithQuery };

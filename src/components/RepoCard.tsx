@@ -3,9 +3,9 @@ import React, { useState } from "react";
 import Modal from "./Modal";
 
 interface Props {
-  item: ApiItems;
+  item: RepoItems;
   type?: "saved" | "searched";
-  handleClick: (item: ApiItems) => void;
+  handleClick: (item: RepoItems) => void;
 }
 
 export default function RepoCard({ item, type, handleClick }: Props) {
@@ -31,7 +31,7 @@ export default function RepoCard({ item, type, handleClick }: Props) {
             </div>
           </ModalContent>
         </Modal>
-        <Container onClick={() => setModal(true)}>
+        <SavedContainer>
           <img src={item.owner.avatar_url} alt="avatar" />
           <Wrapper>
             <h1>{item.full_name}</h1>
@@ -39,7 +39,15 @@ export default function RepoCard({ item, type, handleClick }: Props) {
             <p>created_at: {new Date(item.created_at).toLocaleDateString()}</p>
             <p>updated_at: {new Date(item.updated_at).toLocaleDateString()}</p>
           </Wrapper>
-        </Container>
+          <DelBtn
+            onClick={(e) => {
+              e.stopPropagation();
+              setModal(true);
+            }}
+          >
+            X
+          </DelBtn>
+        </SavedContainer>
       </>
     );
   }
@@ -105,15 +113,29 @@ const CancelBtn = styled(Button)({
   backgroundColor: "#f44336",
 });
 
+const DelBtn = styled(Button)({
+  color: "black",
+  fontWeight: "bold",
+  width: "30px",
+  alignSelf: "flex-start",
+
+  "&:hover": {
+    backgroundColor: "#DCDCDC",
+  },
+});
+
 const Container = styled.div({
+  backgroundColor: "#fff",
   minWidth: "680px",
   width: "calc(50% - 20px)",
   display: "flex",
   alignItems: "center",
   gap: "10px",
+  cursor: "pointer",
   border: "1px solid black",
   transform: "scale(0.9)",
   transition: "transform 0.2s linear",
+  padding: "10px",
 
   "& img": {
     width: "200px",
@@ -127,6 +149,20 @@ const Container = styled.div({
   "@media screen and (max-width: 1400px)": {
     minWidth: "unset",
     width: "100%",
+  },
+});
+
+const SavedContainer = styled.div({
+  backgroundColor: "#fff",
+  display: "flex",
+  alignItems: "center",
+  gap: "10px",
+  cursor: "pointer",
+  border: "1px solid black",
+  padding: "5px",
+
+  "& img": {
+    width: "50px",
   },
 });
 

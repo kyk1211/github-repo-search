@@ -1,23 +1,48 @@
 import styled from "@emotion/styled";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import useLocalStorage from "../hooks/useLocalStorage";
 import RepoCard from "./RepoCard";
 
 export default function SavedRepos() {
-  const [repos, setRepos] = useLocalStorage<ApiItems[]>("repos");
+  const navigate = useNavigate();
+  const [repos, setRepos] = useLocalStorage<RepoItems[]>("repos");
 
-  const handleDelete = (item: ApiItems) => {
+  const handleDelete = (item: RepoItems) => {
     setRepos((prev) => prev.filter((value) => value.id !== item.id));
-    alert("삭제 성공");
   };
 
   return (
-    <aside style={{ width: "30%" }}>
-      <ul>
+    <Container>
+      <Title>저장 목록</Title>
+      <List>
         {repos?.map((item) => (
-          <RepoCard item={item} type={"saved"} handleClick={handleDelete} />
+          <li key={item.id} onClick={() => navigate({ pathname: "/issue", search: `?repo=${item.full_name}` })}>
+            <RepoCard item={item} type={"saved"} handleClick={handleDelete} />
+          </li>
         ))}
-      </ul>
-    </aside>
+      </List>
+    </Container>
   );
 }
+
+const Container = styled.aside({
+  width: "500px",
+  minHeight: "100vh",
+  padding: "10px",
+  borderRight: "1px solid black",
+  display: "flex",
+  flexDirection: "column",
+  gap: "10px",
+});
+
+const Title = styled.h1({
+  textAlign: "center",
+});
+
+const List = styled.ul({
+  listStyle: "none",
+  display: "flex",
+  flexDirection: "column",
+  gap: "10px",
+});
