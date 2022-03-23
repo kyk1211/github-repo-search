@@ -6,6 +6,15 @@ export default function Search() {
   const navigate = useNavigate();
   const [repo, setRepo] = useState("");
 
+  const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    console.log(e);
+    if (e.key === "Enter") {
+      e.preventDefault();
+      navigate({ pathname: "/search", search: `?repo=${repo}` });
+      setRepo("");
+    }
+  };
+
   return (
     <Container>
       <Wrapper>
@@ -14,6 +23,7 @@ export default function Search() {
           onChange={(e) => {
             setRepo(e.target.value);
           }}
+          onKeyUp={handleKeyUp}
           value={repo}
         />
         <Btn
