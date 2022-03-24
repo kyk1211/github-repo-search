@@ -35,11 +35,11 @@ const Container = styled.div<StyleProps>`
   box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
 
   @keyframes fadeIn {
-    from {
+    0% {
       transform: translateX(-100%);
       opacity: 0;
     }
-    to {
+    40% {
       transform: translateX(0);
       opacity: 1;
     }
@@ -58,7 +58,7 @@ const Container = styled.div<StyleProps>`
   animation-fill-mode: forwards;
   animation-name: fadeIn, fadeOut;
   animation-delay: 0s, 2s;
-  animation-duration: 1s, 2s;
+  animation-duration: 2s, 1s;
 `;
 
 const ProgressBar = styled.div<StyleProps>`
@@ -77,5 +77,5 @@ const ProgressBar = styled.div<StyleProps>`
     }
   }
 
-  animation: Progress 2.5s;
+  animation: Progress 2s;
 `;

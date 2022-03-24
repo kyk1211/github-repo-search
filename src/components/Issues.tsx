@@ -64,14 +64,6 @@ const Title = styled.h1({
   textAlign: "center",
 });
 
-const Div = styled.div({
-  width: "100%",
-  height: "100%",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-});
-
 const Wrapper = styled.ul({
   width: "100%",
   padding: "10px 20px",
@@ -79,7 +71,6 @@ const Wrapper = styled.ul({
   display: "flex",
   flexWrap: "wrap",
   gap: "10px",
-  justifyContent: "center",
   alignItems: "flex-start",
   flexDirection: "column",
 });
