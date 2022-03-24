@@ -9,10 +9,9 @@ import Search from "../components/Search";
 import useLocalStorage from "../hooks/useLocalStorage";
 import Loading from "../components/Loading";
 import { useToast } from "../hooks/useToast";
+import { useQuery } from "react-query";
 
 export default function SearchList() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [data, setData] = useState<RepoItems[]>([]);
   const [dataCount, setDataCount] = useState(0);
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState<ParsedQs>({});
@@ -20,22 +19,20 @@ export default function SearchList() {
   const toast = useToast();
   const location = useLocation();
 
-  const getData = async (repo: string, num: number) => {
-    setIsLoading(true);
-    const result = await fetchReposWithQuery<RepoResult>(repo, num);
-    setData(result.items);
-    setDataCount(result.total_count >= 1000 ? 1000 : result.total_count);
-    setIsLoading(false);
-  };
+  const { data: RepoData, isFetching } = useQuery<RepoResult>(
+    ["repos", { name: query.repo as string, page: page }],
+    async () => fetchReposWithQuery<RepoResult>(query.repo as string, page),
+    { keepPreviousData: true, refetchOnWindowFocus: true, staleTime: 60000, enabled: !!query.repo }
+  );
 
   const handleSave = (item: RepoItems) => {
     if (repos !== null && repos.length < 4) {
       if (repos.filter((value) => value.id !== item.id).length !== repos.length) {
         toast("이미 저장되었습니다.", false);
       } else {
-        const data = [...repos];
-        data.push(item);
-        setRepos(data);
+        const myRepos = [...repos];
+        myRepos.push(item);
+        setRepos(myRepos);
         toast("저장 성공", true);
       }
     }
@@ -45,16 +42,13 @@ export default function SearchList() {
     if (repos === null) {
       const myRepo = [item];
       setRepos(myRepo);
+      toast("저장 성공", true);
     }
   };
 
   useEffect(() => {
-    setData([]);
     setDataCount(0);
     setPage(1);
-  }, [location.search]);
-
-  useEffect(() => {
     setQuery(
       qs.parse(location.search, {
         ignoreQueryPrefix: true,
@@ -63,22 +57,23 @@ export default function SearchList() {
   }, [location.search]);
 
   useEffect(() => {
-    if (query.repo) {
-      getData(query.repo as string, page);
+    if (RepoData) {
+      setDataCount(RepoData.total_count >= 1000 ? 1000 : RepoData.total_count);
     }
-  }, [page, query.repo]);
+  }, [RepoData]);
 
   return (
     <Container>
       <Search />
       <Wrapper>
-        {isLoading ? (
+        {isFetching && (
           <LoadingContainer>
             <Loading />
           </LoadingContainer>
-        ) : (
-          data?.map((el) => <RepoCard key={el.id} item={el} handleClick={handleSave} />)
         )}
+        {query.repo &&
+          !isFetching &&
+          RepoData?.items.map((item) => <RepoCard key={item.id} item={item} handleClick={handleSave} />)}
       </Wrapper>
       <Pagination dataCount={dataCount} currentPage={page} onPageChange={setPage} />
     </Container>
