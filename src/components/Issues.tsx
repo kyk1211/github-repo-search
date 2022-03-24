@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import qs from "qs";
 import { ParsedQs } from "qs";
 import React, { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 import { useLocation } from "react-router-dom";
 import { fetchIssuesWithQuery } from "../lib/callApi";
 import IssueCard from "./IssueCard";
@@ -9,28 +10,20 @@ import Loading from "./Loading";
 import Pagination from "./Pagination";
 
 export default function Issues() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [issues, setIssues] = useState<IssueItems[]>([]);
-  const location = useLocation();
   const [dataCount, setDataCount] = useState(0);
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState<ParsedQs>({});
+  const location = useLocation();
 
-  const getData = async (repo: string, num: number) => {
-    setIsLoading(true);
-    const result = await fetchIssuesWithQuery<IssueResult>(repo, num);
-    setIssues(result.items);
-    setDataCount(result.total_count >= 1000 ? 1000 : result.total_count);
-    setIsLoading(false);
-  };
+  const { data: IssueData, isFetching } = useQuery<IssueResult>(
+    ["issues", { name: query.repo as string, page: page }],
+    async () => fetchIssuesWithQuery<IssueResult>(query.repo as string, page),
+    { keepPreviousData: true, refetchOnWindowFocus: true, staleTime: 60000, enabled: !!query.repo }
+  );
 
   useEffect(() => {
-    setIssues([]);
     setDataCount(0);
     setPage(1);
-  }, [location.search]);
-
-  useEffect(() => {
     setQuery(
       qs.parse(location.search, {
         ignoreQueryPrefix: true,
@@ -39,18 +32,20 @@ export default function Issues() {
   }, [location.search]);
 
   useEffect(() => {
-    if (query.repo) {
-      getData(query.repo as string, page);
+    if (IssueData) {
+      setDataCount(IssueData.total_count >= 1000 ? 1000 : IssueData.total_count);
     }
-  }, [page, query.repo]);
+  }, [IssueData]);
 
   return (
     <Container>
       <Title>Issues</Title>
-      {issues.length === 0 && !isLoading && <p>이슈가 없습니다.</p>}
-      {isLoading && <Loading />}
+      {IssueData?.items.length === 0 && !isFetching && <p>이슈가 없습니다.</p>}
+      {isFetching && <Loading />}
       <Wrapper>
-        {!isLoading && issues.map((value) => <IssueCard key={value.id} item={value} name={query.repo as string} />)}
+        {query.repo &&
+          !isFetching &&
+          IssueData?.items.map((item) => <IssueCard key={item.id} item={item} name={query.repo as string} />)}
       </Wrapper>
       <Pagination dataCount={dataCount} currentPage={page} onPageChange={setPage} />
     </Container>
