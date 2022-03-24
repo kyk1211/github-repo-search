@@ -35,8 +35,15 @@ export default function SavedRepos() {
 const Container = styled.aside({
   width: "500px",
   minHeight: "calc(100vh - 50px)",
-  padding: "10px",
+  padding: "10px 30px",
   borderRight: "1px solid black",
+
+  "@media screen and (max-width: 1420px)": {
+    width: "100%",
+    minHeight: "unset",
+    borderRight: "none",
+    borderBottom: "1px solid black",
+  },
 });
 
 const Wrapper = styled.div({
@@ -45,6 +52,10 @@ const Wrapper = styled.div({
   display: "flex",
   flexDirection: "column",
   gap: "10px",
+
+  "@media screen and (max-width: 1420px)": {
+    position: "unset",
+  },
 });
 
 const Title = styled.h1({
@@ -56,4 +67,8 @@ const List = styled.ul({
   display: "flex",
   flexDirection: "column",
   gap: "10px",
+
+  "@media screen and (max-width: 1420px)": {
+    position: "unset",
+  },
 });

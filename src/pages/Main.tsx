@@ -5,7 +5,7 @@ import Search from "../components/Search";
 export default function Main() {
   return (
     <Container>
-      Payhere 기업과제
+      <h1>Payhere 기업과제</h1>
       <Search />
     </Container>
   );
@@ -20,6 +20,5 @@ const Container = styled.div({
   alignItems: "center",
   justifyContent: "flex-start",
   gap: "100px",
-  fontWeight: "bold",
-  fontSize: "52px",
+  fontSize: "30px",
 });

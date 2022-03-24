@@ -15,9 +15,9 @@ export default function IssueCard({ item, name }: Props) {
           <p>{item.user.login}</p>
         </UserInfo>
         <Desc>
-          {name && <h3>repo: {name}</h3>}
+          {name && <h3>Repo: {name}</h3>}
           <h3>
-            issue: {item.title} <Num>#{item.number}</Num>
+            Issue: {item.title} <Num>#{item.number}</Num>
           </h3>
           <p>state: {item.state}</p>
           <p>created_at: {new Date(item.created_at).toLocaleDateString()}</p>
@@ -56,7 +56,6 @@ const Num = styled.span({
 const UserInfo = styled.div({
   display: "flex",
   flexDirection: "column",
-  width: "150px",
   alignItems: "center",
   p: {
     minHeight: "20px",
@@ -64,7 +63,7 @@ const UserInfo = styled.div({
 });
 
 const Avatar = styled.img({
-  width: "100%",
+  width: "150px",
   border: "1px solid black",
 });
 

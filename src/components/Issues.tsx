@@ -71,7 +71,6 @@ const Wrapper = styled.ul({
   display: "flex",
   flexWrap: "wrap",
   gap: "10px",
-  justifyContent: "center",
   alignItems: "flex-start",
   flexDirection: "column",
 });

@@ -146,7 +146,7 @@ const Container = styled.div({
     transform: "scale(1)",
   },
 
-  "@media screen and (max-width: 1400px)": {
+  "@media screen and (max-width: 1420px)": {
     minWidth: "unset",
     width: "100%",
   },
@@ -162,7 +162,7 @@ const SavedContainer = styled.div({
   padding: "5px",
 
   "& img": {
-    width: "50px",
+    width: "150px",
   },
 });
 
