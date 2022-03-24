@@ -7,7 +7,7 @@ import RepoCard from "./RepoCard";
 
 export default function SavedRepos() {
   const navigate = useNavigate();
-  const [repos, setRepos] = useLocalStorage<RepoItems[]>("repos");
+  const [repos, setRepos] = useLocalStorage<RepoItems[]>("repos", []);
   const toast = useToast();
 
   const handleDelete = (item: RepoItems) => {

@@ -15,7 +15,7 @@ export default function SearchList() {
   const [dataCount, setDataCount] = useState(0);
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState<ParsedQs>({});
-  const [repos, setRepos] = useLocalStorage<RepoItems[]>("repos");
+  const [repos, setRepos] = useLocalStorage<RepoItems[]>("repos", []);
   const toast = useToast();
   const location = useLocation();
 
