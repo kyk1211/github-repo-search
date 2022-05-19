@@ -1,6 +1,6 @@
 # 배포주소
 
-https://wanted-codestates-project-9-nu.vercel.app/
+https://wanted-codestates-project-9-nu.vercel.app
 
 # 실행 설정
 
