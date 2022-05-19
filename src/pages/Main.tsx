@@ -5,7 +5,7 @@ import Search from "../components/Search";
 export default function Main() {
   return (
     <Container>
-      <h1>Payhere 기업과제</h1>
+      <h1>Github Repository Search</h1>
       <Search />
     </Container>
   );
