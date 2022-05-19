@@ -1,13 +1,13 @@
 # 배포주소
 
-https://wanted-codestates-project-9-nu.vercel.app
+https://github-repo-search-omega.vercel.app/
 
 # 실행 설정
 
 1. git clone
 
 ```
-git clone https://github.com/kyk1211/wanted-codestates-project-9.git
+git clone https://github.com/kyk1211/github-api-search
 ```
 
 2. 필요한 라이브러리 설치
