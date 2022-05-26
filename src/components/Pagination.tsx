@@ -18,8 +18,6 @@ function Pagination({ dataCount, rowsPerPage = 10, currentPage, siblingCount = 2
     rowsPerPage,
   });
 
-  if (currentPage === 0 || paginationRange.length < 2) return null;
-
   const onNext = () => {
     onPageChange(currentPage + 1);
   };
@@ -27,9 +25,9 @@ function Pagination({ dataCount, rowsPerPage = 10, currentPage, siblingCount = 2
   const onDoubleNext = () => {
     if (currentPage >= Math.ceil(dataCount / rowsPerPage) - 10) {
       onPageChange(Math.ceil(dataCount / rowsPerPage));
-    } else {
-      onPageChange(currentPage + 10);
+      return;
     }
+    onPageChange(currentPage + 10);
   };
 
   const onPrev = () => {
@@ -39,12 +37,15 @@ function Pagination({ dataCount, rowsPerPage = 10, currentPage, siblingCount = 2
   const onDoublePrev = () => {
     if (currentPage <= 10) {
       onPageChange(1);
-    } else {
-      onPageChange(currentPage - 10);
+      return;
     }
+    onPageChange(currentPage - 10);
   };
 
   let lastPage = paginationRange[paginationRange.length - 1];
+
+  if (currentPage === 0 || paginationRange.length < 2) return null;
+
   return (
     <Container>
       <DbArrow onClick={onDoublePrev} disabled={currentPage === 1}>
@@ -64,15 +65,15 @@ function Pagination({ dataCount, rowsPerPage = 10, currentPage, siblingCount = 2
               &#8230;
             </Dot>
           );
-        } else if (typeof pageNum === "number") {
+        }
+        if (typeof pageNum === "number") {
           return (
             <PageBtn key={idx} onClick={() => onPageChange(pageNum)} active={currentPage === pageNum}>
               {pageNum}
             </PageBtn>
           );
-        } else {
-          return null;
         }
+        return null;
       })}
       <Arrow onClick={onNext} disabled={currentPage === lastPage}>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">

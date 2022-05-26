@@ -26,23 +26,26 @@ export default function SearchList() {
   );
 
   const handleSave = (item: RepoItems) => {
-    if (repos !== null && repos.length < 4) {
-      if (repos.filter((value) => value.id !== item.id).length !== repos.length) {
-        toast("이미 저장되었습니다.", false);
-      } else {
-        const myRepos = [...repos];
-        myRepos.push(item);
-        setRepos(myRepos);
-        toast("저장 성공", true);
-      }
-    }
     if (repos !== null && repos.length >= 4) {
       toast("저장은 최대 4개까지 입니다.", false);
+      return;
     }
     if (repos === null) {
       const myRepo = [item];
       setRepos(myRepo);
       toast("저장 성공", true);
+      return;
+    }
+    if (repos.filter((value) => value.id !== item.id).length !== repos.length) {
+      toast("이미 저장되었습니다.", false);
+      return;
+    }
+    if (repos.filter((value) => value.id !== item.id).length === repos.length) {
+      const myRepos = [...repos];
+      myRepos.push(item);
+      setRepos(myRepos);
+      toast("저장 성공", true);
+      return;
     }
   };
 
