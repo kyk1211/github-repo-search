@@ -24,6 +24,5 @@ export const useToast = () => {
       dispatch(deleteToast());
     });
   }, [dispatch, toast]);
-
   return handleToast;
 };
